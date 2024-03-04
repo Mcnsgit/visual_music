@@ -1,8 +1,7 @@
 import express from 'express';
 import axios from 'axios';
 import querystring from 'querystring';
-import dotenv from 'dotenv';
-dotenv.config();
+import { generateRandomString } from '../utils/authUtils';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -11,6 +10,8 @@ const port = process.env.PORT || 3001;
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
 
 app.use(express.json());
+
+
 
 // This route initializes authentication with Spotify.
 app.get('/auth', (req, res) => {
@@ -53,18 +54,6 @@ app.get('/callback', async (req, res) => {
     }
 });
 
-// Function to generate a random string for the state parameter
-// This helps mitigate CSRF attacks.
-function generateRandomString(length) {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-
-    return text;
-}
 
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);

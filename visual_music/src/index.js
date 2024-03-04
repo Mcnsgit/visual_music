@@ -1,41 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './components/Visual_Music';
+import VisualMusic from './components/Visual_Music';
 import Callback from './components/Callback';
-import PageNotFound from './PageNotFound';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Login from './components/Login';
+import PageNotFound from './components/PageNotFound';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <App />,
-        errorElement: <PageNotFound />
-
-    },
-    {
-        path: '/callback',
-        element: <Callback />
-    },
-    {
-        path: '/about',
-        element: <App />
-    },
-    {
-        path: '*',
-        element: <PageNotFound />
-    },
-    {
-        path:'/spotify-service'
-    },
-    {
-        path: '/visual-music',
-    }
+  {
+    path: '/',
+    element: <VisualMusic />, // Main entry, acting as Home
+    errorElement: <PageNotFound />
+  },
+  {
+    path: '/login',
+    element: <Login />, // Login page
+  },
+  {
+    path: '/callback',
+    element: <Callback />, // Spotify OAuth callback
+  },
+  {
+    path: '*', // Catch-all for not found pages
+    element: <PageNotFound />
+  }
 ]);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
     <RouterProvider router={router} />
 );
-

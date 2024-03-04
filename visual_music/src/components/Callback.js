@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom'; // Updated import
-import { handleAuthCode } from '../services/spotifyService';
+import { handleAuthCode } from '../services/spotifyAuthService';
 
 function Callback() {
     const location = useLocation();

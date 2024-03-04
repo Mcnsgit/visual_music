@@ -10,6 +10,7 @@ import { NavLink } from 'react-router-dom';
             <NavLink style={{textDecoration: 'underline', color: 'gold', cursor: 'pointer', fontWeight: 'bold'}} to="/">Home</NavLink>
             <NavLink style={{textDecoration: 'underline', color: 'gold', cursor: 'pointer', fontWeight: 'bold'}} to="/Visual_Music">Visual Music</NavLink>
             <NavLink style={{textDecoration: 'underline', color: 'gold', cursor: 'pointer', fontWeight: 'bold'}} to="/Visual_Music/About">About</NavLink>
+            <NavLink style={{textDecoration: 'underline', color: 'gold', cursor: 'pointer', fontWeight: 'bold'}} to="/Visual_Music/login">login</NavLink>
             </div>
         </div>
     )
