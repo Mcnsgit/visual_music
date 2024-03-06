@@ -1,38 +1,39 @@
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom'; // Updated import
-import { handleAuthCode } from '../services/spotifyAuthService';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function Callback() {
-    const location = useLocation();
+const Callback = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const returnedState = new URLSearchParams(location.search).get('state');
-        const storedState = localStorage.getItem("spotify_auth_state");
-
-        if (returnedState !== storedState) {
-            console.error('Invalid state parameter');
-            navigate.push('/'); 
-        }
-        try {
-            const query = new URLSearchParams(location.search);
-            const code = query.get('code');
-
-            if (code) {
-                console.log('Authorization code:', code);
-                handleAuthCode(code).then(() => {
-                    navigate('/', { replace: true });
-                });
-            } else {
-                console.error('No authorization code found in the URL');
-                    navigate.push('/'); 
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        if (code) {
+            const exchangeCodeForTokens = async (code) => {
+                try {
+                    // Correct way to construct the URL for Axios request
+                    const url = new URL('/exchange_code', window.location.origin);
+                    const response = await axios.post(url.toString(), { code }); // Your backend endpoint
+                    const { accessToken, refreshToken } = response.data;
+                    localStorage.setItem('accessToken', accessToken);
+                    localStorage.setItem('refreshToken', refreshToken);
+                    navigate('/'); // Navigate to the home page or dashboard
+                } catch (error) {
+                    console.error('Error exchanging auth code for tokens:', error);
+                    navigate('/login'); // Navigate back to login on failure
                 }
-        } catch (error) {
-            console.error('Error occurred during authentication:', error);
+            };
+            
+            exchangeCodeForTokens(code);
+        } else {
+            console.error('Authorization code not found.');
+            navigate('/login');
         }
-    }, [location, navigate]);
+    }, [navigate]);
 
-    return <div>Authentication successful. You can close this window.</div>;
-}
+    return (
+        <div>Loading...</div>
+    );
+};
 
 export default Callback;
